@@ -1,5 +1,7 @@
 # solidjs-window-manager
 
+<img src="https://i.imgur.com/AbeTZsS.gif" />
+
 Demo here: https://codesandbox.io/s/solidjs-window-based-ui-demo-kmg3ib?file=/src/App.tsx:186-508
 
 ## Install
