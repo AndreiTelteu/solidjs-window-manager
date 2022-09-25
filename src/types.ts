@@ -1,4 +1,1 @@
-
-export interface WindowControls {
-  
-}
+export interface WindowControls {}

@@ -7,7 +7,7 @@ export default function App(props): any {
   return (
     <WindowManager
       loadWindow={(props) => {
-        return lazy(() => import(/* @vite-ignore */"./windows/" + props.component))
+        return lazy(() => import(/* @vite-ignore */ './windows/' + props.component));
       }}
       onReady={(api) => (windowApi = api)}
       options={{
@@ -19,7 +19,7 @@ export default function App(props): any {
         <button
           type="button"
           onClick={() => {
-            windowApi?.openWindow?.("MyComputer", { path: "/home/user" });
+            windowApi?.openWindow?.('MyComputer', { path: '/home/user' });
           }}
         >
           open new window
@@ -29,7 +29,7 @@ export default function App(props): any {
         <button
           type="button"
           onClick={() => {
-            windowApi?.openWindow?.("AllPosts");
+            windowApi?.openWindow?.('AllPosts');
           }}
         >
           open All posts
@@ -37,6 +37,4 @@ export default function App(props): any {
       </p>
     </WindowManager>
   );
-};
-
-// export default App;
+}

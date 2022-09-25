@@ -1,10 +1,10 @@
-import { children, Component, For, onMount, splitProps } from "solid-js";
-import useWindowState from "./store/useWindowState";
-import { WindowControls } from "./WindowControls";
+import { children, Component, For, onMount, splitProps } from 'solid-js';
+import useWindowState from './store/useWindowState';
+import { WindowControls } from './WindowControls';
 
 export const WindowManager: Component = (attrs: any) => {
   const child = children(() => attrs.children);
-  const [props, rest] = splitProps(attrs, ["onReady", "loadWindow", "options"]);
+  const [props, rest] = splitProps(attrs, ['onReady', 'loadWindow', 'options']);
   const [store, actions] = useWindowState();
   const openedWindows = () => Object.keys(store.windows);
 
@@ -19,7 +19,7 @@ export const WindowManager: Component = (attrs: any) => {
     start: [0, 0],
     windowStart: [0, 0],
     activeWindowKey: null,
-    offset: [0, 0]
+    offset: [0, 0],
   };
   const events = {
     onMouseDown: (event) => {
@@ -28,12 +28,12 @@ export const WindowManager: Component = (attrs: any) => {
       let foundWindow = false;
       let activeWindow = null;
       event.path?.forEach((el) => {
-        if (String(el?.className || "").indexOf("header") !== -1) {
+        if (String(el?.className || '').indexOf('header') !== -1) {
           foundHeader = true;
         }
-        if ((el?.attributes || {}).hasOwnProperty("window-key")) {
+        if ((el?.attributes || {}).hasOwnProperty('window-key')) {
           foundWindow = true;
-          state.activeWindowKey = el.attributes?.["window-key"]?.value;
+          state.activeWindowKey = el.attributes?.['window-key']?.value;
           if (store.windows.hasOwnProperty(state.activeWindowKey)) {
             activeWindow = store.windows[state.activeWindowKey];
             if (activeWindow.attrs.zIndex > 1) {
@@ -47,19 +47,13 @@ export const WindowManager: Component = (attrs: any) => {
       state.start = [event.clientX, event.clientY];
       if (activeWindow) {
         state.windowStart = activeWindow.attrs.pos;
-        state.offset = [
-          state.start[0] - state.windowStart[0],
-          state.start[1] - state.windowStart[1]
-        ];
+        state.offset = [state.start[0] - state.windowStart[0], state.start[1] - state.windowStart[1]];
       }
     },
     onMouseMove: (event) => {
       event.preventDefault();
       if (!state.active) return;
-      actions.moveWindow(state.activeWindowKey, [
-        event.clientX - state.offset[0],
-        event.clientY - state.offset[1]
-      ]);
+      actions.moveWindow(state.activeWindowKey, [event.clientX - state.offset[0], event.clientY - state.offset[1]]);
     },
     onMouseUp: (event) => {
       event.preventDefault();
@@ -68,12 +62,12 @@ export const WindowManager: Component = (attrs: any) => {
       state.windowStart = [0, 0];
       state.activeWindowKey = null;
       state.offset = [0, 0];
-    }
+    },
   };
-  
+
   const windowApi = {
     openWindow,
-  }
+  };
 
   onMount(() => {
     props?.onReady?.(windowApi);
@@ -92,7 +86,7 @@ export const WindowManager: Component = (attrs: any) => {
               loadWindow={props.loadWindow}
               windowApi={windowApi}
               controls={{
-                close: () => actions.closeWindow(windowProps?.attrs?.key)
+                close: () => actions.closeWindow(windowProps?.attrs?.key),
               }}
             />
           );

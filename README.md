@@ -17,16 +17,18 @@ yarn add solidjs-window-manager
 ## Usage example
 
 `src/App.tsx`
+
 ```jsx
-import { Component } from "solid-js";
+import { Component } from 'solid-js';
 import { WindowManager } from 'solidjs-window-manager';
 
 export default function App(): Component {
   let windowApi;
   return (
     <WindowManager
-      loadWindow={(props) => { // this prop is required
-        return lazy(() => import(/* @vite-ignore */"./windows/" + props.component))
+      loadWindow={(props) => {
+        // this prop is required
+        return lazy(() => import(/* @vite-ignore */ './windows/' + props.component));
       }}
       onReady={(api) => (windowApi = api)}
       options={{
@@ -38,7 +40,7 @@ export default function App(): Component {
         <button
           type="button"
           onClick={() => {
-            windowApi?.openWindow?.("MyComputer", { path: "/home/user" });
+            windowApi?.openWindow?.('MyComputer', { path: '/home/user' });
           }}
         >
           open new window
@@ -46,9 +48,11 @@ export default function App(): Component {
       </p>
     </WindowManager>
   );
-};
+}
 ```
+
 `src/windows/MyComputer.jsx` (you can change `windows` folder via `loadWindow` prop)
+
 ```jsx
 import { Component } from 'solid-js';
 import { createSignal, onMount } from "solid-js";
@@ -90,9 +94,9 @@ npm start
 
 ## Roadmap:
 
-| | |
-| :-- | :--------------------- |
-| ✅ | First version out 🎉🥳 |
-| ✅ | Added a example solid app |
+|          |                           |
+| :------- | :------------------------ |
+| ✅       | First version out 🎉🥳    |
+| ✅       | Added a example solid app |
 | &#x2610; | Center windows by default |
-| &#x2610; | Support minimize |
+| &#x2610; | Support minimize          |
