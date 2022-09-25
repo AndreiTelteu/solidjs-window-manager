@@ -1,8 +1,8 @@
-import { Component, createSignal, ErrorBoundary, Show, splitProps, Suspense } from 'solid-js';
+import { JSX, createSignal, ErrorBoundary, Show, splitProps, Suspense } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
 import useWindowState from './store/useWindowState';
 
-export const WindowControls: Component = (attrs: any) => {
+export function WindowControls(attrs: any): JSX.Element {
   const [props, rest] = splitProps(attrs, ['component', 'props', 'attrs', 'controls', 'loadWindow', 'windowApi']);
   const [windowState, setWindowState] = createSignal({
     title: 'Loading...',
@@ -25,7 +25,10 @@ export const WindowControls: Component = (attrs: any) => {
     >
       <div class="window-controller-header">
         <div class="window-controller-header-icon">
-          <Show when={props.attrs.icon} fallback={<span class="icon-empty">{String(props?.component || ' ').charAt(0)}</span>}>
+          <Show
+            when={props.attrs.icon}
+            fallback={<span class="icon-empty">{String(props?.component || ' ').charAt(0)}</span>}
+          >
             icon
           </Show>
         </div>
@@ -188,4 +191,4 @@ export const WindowControls: Component = (attrs: any) => {
       `}</style>
     </div>
   );
-};
+}

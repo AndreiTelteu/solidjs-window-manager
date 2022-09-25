@@ -19,10 +19,10 @@ yarn add solidjs-window-manager
 `src/App.tsx`
 
 ```jsx
-import { Component } from 'solid-js';
+import { JSX } from 'solid-js';
 import { WindowManager } from 'solidjs-window-manager';
 
-export default function App(): Component {
+export default function App(): JSX.Element {
   let windowApi;
   return (
     <WindowManager
@@ -54,21 +54,20 @@ export default function App(): Component {
 `src/windows/MyComputer.jsx` (you can change `windows` folder via `loadWindow` prop)
 
 ```jsx
-import { Component } from 'solid-js';
-import { createSignal, onMount } from "solid-js";
+import { JSX, createSignal, onMount } from 'solid-js';
 
-export default function MyComputer(props: any): Component {
+export default function MyComputer(props: any): JSX.Element {
   onMount(() => {
     // this is how you can customize window decorator
     props?.windowUpdateProps({
-      title: "My computer",
+      title: 'My computer',
       // the first call to windowUpdateProps will hide the loading effect, unless you overwrite it like so
-      loading: true // optional. default is false
+      loading: true, // optional. default is false
     });
     setTimeout(() => {
       props?.windowUpdateProps({
-        title: "My computer: " + props?.path,
-        loading: false // you can change this props after a fetch, or anytime
+        title: 'My computer: ' + props?.path,
+        loading: false, // you can change this props after a fetch, or anytime
       });
     }, 1500);
   });
@@ -78,9 +77,8 @@ export default function MyComputer(props: any): Component {
       <p>My computer:</p>
       Path: {props?.path}
     </div>
-  ) as Component; // I don't know how to fix vscode typescript issue other that this ugly fix
-};
-
+  );
+}
 ```
 
 ## Full demo and playground

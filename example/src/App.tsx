@@ -1,8 +1,7 @@
-// @ts-nocheck
-import { Component, lazy } from 'solid-js';
+import { JSX, lazy } from 'solid-js';
 import { WindowManager } from '../../src/index';
 
-export default function App(props): any {
+export default function App(props: any): JSX.Element {
   let windowApi;
   return (
     <WindowManager

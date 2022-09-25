@@ -1,7 +1,6 @@
-import type { Component } from 'solid-js';
-import { createSignal, onMount } from 'solid-js';
+import { JSX, createSignal, onMount } from 'solid-js';
 
-export default function MyComputer(props: any): Component {
+export default function MyComputer(props: any): JSX.Element {
   onMount(() => {
     props?.windowUpdateProps({
       title: 'My computer',
@@ -20,5 +19,5 @@ export default function MyComputer(props: any): Component {
       <p>My computer:</p>
       Path: {props?.path}
     </div>
-  ) as Component; // I don't know how to fix vscode typescript issue other that this ugly fix
+  );
 }

@@ -1,8 +1,8 @@
-import { children, Component, For, onMount, splitProps } from 'solid-js';
+import { children, JSX, For, onMount, splitProps } from 'solid-js';
 import useWindowState from './store/useWindowState';
 import { WindowControls } from './WindowControls';
 
-export const WindowManager: Component = (attrs: any) => {
+export function WindowManager(attrs: any): JSX.Element {
   const child = children(() => attrs.children);
   const [props, rest] = splitProps(attrs, ['onReady', 'loadWindow', 'options']);
   const [store, actions] = useWindowState();
@@ -23,7 +23,6 @@ export const WindowManager: Component = (attrs: any) => {
   };
   const events = {
     onMouseDown: (event) => {
-      event.preventDefault();
       let foundHeader = false;
       let foundWindow = false;
       let activeWindow = null;
@@ -43,6 +42,8 @@ export const WindowManager: Component = (attrs: any) => {
         }
       });
       if (!foundHeader || !foundWindow) return;
+      event.preventDefault();
+      event.stopPropagation();
       state.active = true;
       state.start = [event.clientX, event.clientY];
       if (activeWindow) {
@@ -51,13 +52,15 @@ export const WindowManager: Component = (attrs: any) => {
       }
     },
     onMouseMove: (event) => {
-      event.preventDefault();
       if (!state.active) return;
+      event.preventDefault();
+      event.stopPropagation();
       actions.moveWindow(state.activeWindowKey, [event.clientX - state.offset[0], event.clientY - state.offset[1]]);
     },
     onMouseUp: (event) => {
-      event.preventDefault();
       if (!state.active) return;
+      event.preventDefault();
+      event.stopPropagation();
       state.active = false;
       state.windowStart = [0, 0];
       state.activeWindowKey = null;
@@ -136,4 +139,4 @@ export const WindowManager: Component = (attrs: any) => {
       `}</style>
     </div>
   );
-};
+}
