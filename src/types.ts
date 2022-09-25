@@ -1,2 +1,4 @@
 
-export type WindowControls = any
+export interface WindowControls {
+  
+}

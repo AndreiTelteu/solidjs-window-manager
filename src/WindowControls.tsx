@@ -1,9 +1,11 @@
 import {
   Component,
   createSignal,
+  ErrorBoundary,
   lazy,
   Show,
-  splitProps
+  splitProps,
+  Suspense
 } from "solid-js";
 import { Dynamic } from "solid-js/web";
 import useWindowState from "./store/useWindowState";
@@ -13,7 +15,9 @@ export const WindowControls: Component = (attrs: any) => {
     "component",
     "props",
     "attrs",
-    "controls"
+    "controls",
+    "loadWindow",
+    "windowApi",
   ]);
   const [windowState, setWindowState] = createSignal({
     title: "Loading...",
@@ -21,7 +25,7 @@ export const WindowControls: Component = (attrs: any) => {
   });
   const [store, actions] = useWindowState();
 
-  const NewComponent = lazy(() => import("./windows/" + props.component));
+  const NewComponent = props?.loadWindow?.(props);
   return (
     <div
       class="window-controller-wrapper"
@@ -83,13 +87,25 @@ export const WindowControls: Component = (attrs: any) => {
         )}
       />
       <div class="window-controller-inner">
-        <Dynamic
-          component={NewComponent}
-          {...props.props}
-          windowProps={(i) => {
-            setWindowState((v) => ({ ...v, loading: false, ...i }));
-          }}
-        />
+      <ErrorBoundary
+        fallback={(error) => (
+          <div>
+            <p>Something went terribly wrong.</p>
+            <p>ERROR: {error.message}</p>
+          </div>
+        )}
+      >
+        <Suspense fallback={<></>}>
+          <Dynamic
+            component={NewComponent}
+            {...props.props}
+            windowApi={props.windowApi}
+            windowUpdateProps={(i) => {
+              setWindowState((v) => ({ ...v, loading: false, ...i }));
+            }}
+          />
+        </Suspense>
+      </ErrorBoundary>
       </div>
       <style>{`
         .window-controller-wrapper {

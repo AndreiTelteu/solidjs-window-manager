@@ -40,10 +40,20 @@ const App: Component = () => {
 };
 ```
 
+## Full demo and playground
+
+```
+git clone https://github.com/AndreiTelteu/solidjs-window-manager
+cd solidjs-window-manager/example
+npm install
+npm start
+```
+
 ## Roadmap:
 
 | | |
 | :-- | :--------------------- |
 | ✅ | First version out 🎉🥳 |
+| ✅ | Added a example solid app |
 | &#x2610; | Center windows by default |
 | &#x2610; | Support minimize |

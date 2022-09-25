@@ -4,11 +4,11 @@ import { WindowControls } from "./WindowControls";
 
 export const WindowManager: Component = (attrs: any) => {
   const child = children(() => attrs.children);
-  const [props, rest] = splitProps(attrs, ["onReady", "options"]);
+  const [props, rest] = splitProps(attrs, ["onReady", "loadWindow", "options"]);
   const [store, actions] = useWindowState();
   const openedWindows = () => Object.keys(store.windows);
 
-  const openWindow = (component, props) => {
+  const openWindow = (component, props = {}) => {
     console.log({ component, props });
     actions.openWindow(component, props);
   };
@@ -34,7 +34,6 @@ export const WindowManager: Component = (attrs: any) => {
         if ((el?.attributes || {}).hasOwnProperty("window-key")) {
           foundWindow = true;
           state.activeWindowKey = el.attributes?.["window-key"]?.value;
-          console.log("FOCUS window", state.activeWindowKey);
           if (store.windows.hasOwnProperty(state.activeWindowKey)) {
             activeWindow = store.windows[state.activeWindowKey];
             if (activeWindow.attrs.zIndex > 1) {
@@ -71,11 +70,13 @@ export const WindowManager: Component = (attrs: any) => {
       state.offset = [0, 0];
     }
   };
+  
+  const windowApi = {
+    openWindow,
+  }
 
   onMount(() => {
-    props?.onReady?.({
-      openWindow
-    });
+    props?.onReady?.(windowApi);
   });
 
   return (
@@ -88,6 +89,8 @@ export const WindowManager: Component = (attrs: any) => {
           return (
             <WindowControls
               {...windowProps}
+              loadWindow={props.loadWindow}
+              windowApi={windowApi}
               controls={{
                 close: () => actions.closeWindow(windowProps?.attrs?.key)
               }}
@@ -96,6 +99,15 @@ export const WindowManager: Component = (attrs: any) => {
         }}
       />
       <style>{`
+        html {
+          overflow: hidden;
+        }
+        body {
+          margin: 0;
+          padding: 0;
+          overflow: hidden;
+          font-family: sans-serif;
+        }
         .window-manager-wrapper {
           width: 100vw;
           height: 100vh;
