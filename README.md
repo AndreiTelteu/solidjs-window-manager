@@ -92,9 +92,26 @@ npm start
 
 ## Roadmap:
 
-|          |                           |
-| :------- | :------------------------ |
-| ✅       | First version out 🎉🥳    |
-| ✅       | Added a example solid app |
-| &#x2610; | Center windows by default |
-| &#x2610; | Support minimize          |
+|          |                                               |
+| -------- | --------------------------------------------- |
+| &#x2610; | Center windows by default                     |
+| &#x2610; | Create a taskbar and add support for minimize |
+| &#x2610; | Support maximize                              |
+
+## Changelog:
+
+### v1.0.2
+
+- Made windows load from user-code.
+- Added ErrorBoundry in windows.
+- Added real-life example project using Vite.
+
+### v1.0.1
+
+- Added preview animated gif
+
+### v1.0.0
+
+- First version 🎉🥳
+- redux-like state based on createStore
+- open and move windows
