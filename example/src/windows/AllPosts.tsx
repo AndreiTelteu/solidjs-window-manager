@@ -79,10 +79,10 @@ export default function AllPosts(attrs: any): JSX.Element {
               <div tabIndex={props2.tabIndex} role="listitem" style={props2.style} class="VirtualContainer-listitem">
                 <div
                   style={`
-                  display: flex; flex-direction: row; align-items: center; align-items: center;
-                  padding: 0 10px; border-bottom: 1px solid #ccc; font-size: 13px; width: 100%; height: 100%;
-                  ${props2.index % 2 != 0 ? 'background: rgba(0, 0, 0, 0.04)' : ''}
-                `}
+                    display: flex; flex-direction: row; align-items: center; align-items: center;
+                    padding: 0 10px; border-bottom: 1px solid #ccc; font-size: 13px; width: 100%; height: 100%;
+                    ${props2.index % 2 != 0 ? 'background: rgba(0, 0, 0, 0.04)' : ''}
+                  `}
                 >
                   <span style="flex-shrink: 0; width: 30px;">{props2.item.id}</span>
                   <span style="flex: 1; word-break: break-all;">{props2.item.title}</span>
@@ -92,8 +92,8 @@ export default function AllPosts(attrs: any): JSX.Element {
                   <span style="flex-shrink: 0; width: 56px;">
                     <button
                       type="button"
-                      style="appearance: none; background: none; border: none;"
-                      onClick={() => props?.windowApi?.openWindow?.('MyComputer')}
+                      style="appearance: none; background: none; border: none; cursor: pointer; outline: none;"
+                      onClick={() => props?.windowApi?.openWindow?.('EditPost', { post: props2.item })}
                     >
                       EDIT
                     </button>

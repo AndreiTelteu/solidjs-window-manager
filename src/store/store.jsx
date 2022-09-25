@@ -24,6 +24,7 @@ export const actions = {
   openWindow: (component, props) => ({ type: 'OPEN_WINDOW', component, props }),
   closeWindow: (key) => ({ type: 'CLOSE_WINDOW', key }),
   moveWindow: (key, pos) => ({ type: 'MOVE_WINDOW', key, pos }),
+  resizeWindow: (key, size) => ({ type: 'RESIZE_WINDOW', key, size }),
   focusWindow: (key) => ({ type: 'FOCUS_WINDOW', key }),
 };
 
@@ -52,6 +53,9 @@ export const reducer = (state = DEFAULT_STATE, action, set) => {
       return null;
     case 'MOVE_WINDOW':
       set('windows', action.key, 'attrs', 'pos', action.pos);
+      return null;
+    case 'RESIZE_WINDOW':
+      set('windows', action.key, 'attrs', 'size', action.size);
       return null;
     case 'FOCUS_WINDOW':
       Object.keys(state?.windows || {}).forEach((item) => {

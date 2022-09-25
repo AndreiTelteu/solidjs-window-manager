@@ -18,17 +18,33 @@ export function WindowManager(attrs: any): JSX.Element {
     active: false,
     start: [0, 0],
     windowStart: [0, 0],
+    windowSize: [0, 0],
     activeWindowKey: null,
+    moveAction: null,
+    resizeDir: null,
     offset: [0, 0],
   };
   const events = {
     onMouseDown: (event) => {
       let foundHeader = false;
+      let foundResize: boolean | string = false;
       let foundWindow = false;
       let activeWindow = null;
       event.path?.forEach((el) => {
-        if (String(el?.className || '').indexOf('header') !== -1) {
+        const className = String(el?.className || '');
+        if (className.indexOf('window-controller-header') !== -1) {
           foundHeader = true;
+        }
+        if (className.indexOf('window-controller-resize') !== -1) {
+          foundResize = true;
+          if (className.indexOf('resize-dir-n') !== -1) foundResize = 'n';
+          if (className.indexOf('resize-dir-s') !== -1) foundResize = 's';
+          if (className.indexOf('resize-dir-e') !== -1) foundResize = 'e';
+          if (className.indexOf('resize-dir-w') !== -1) foundResize = 'w';
+          if (className.indexOf('resize-dir-nw') !== -1) foundResize = 'nw';
+          if (className.indexOf('resize-dir-ne') !== -1) foundResize = 'ne';
+          if (className.indexOf('resize-dir-se') !== -1) foundResize = 'se';
+          if (className.indexOf('resize-dir-sw') !== -1) foundResize = 'sw';
         }
         if ((el?.attributes || {}).hasOwnProperty('window-key')) {
           foundWindow = true;
@@ -41,13 +57,20 @@ export function WindowManager(attrs: any): JSX.Element {
           }
         }
       });
-      if (!foundHeader || !foundWindow) return;
+      console.log({ foundHeader, foundWindow, foundResize });
+      if (!foundWindow || (!foundHeader && !foundResize)) return;
       event.preventDefault();
       event.stopPropagation();
       state.active = true;
       state.start = [event.clientX, event.clientY];
+      if (foundHeader) state.moveAction = 'move';
+      if (foundResize != false) {
+        state.moveAction = 'resize';
+        state.resizeDir = foundResize;
+      }
       if (activeWindow) {
         state.windowStart = activeWindow.attrs.pos;
+        state.windowSize = activeWindow.attrs.size || [100, 100];
         state.offset = [state.start[0] - state.windowStart[0], state.start[1] - state.windowStart[1]];
       }
     },
@@ -55,15 +78,72 @@ export function WindowManager(attrs: any): JSX.Element {
       if (!state.active) return;
       event.preventDefault();
       event.stopPropagation();
-      actions.moveWindow(state.activeWindowKey, [event.clientX - state.offset[0], event.clientY - state.offset[1]]);
+      if (state.moveAction == 'move') {
+        actions.moveWindow(state.activeWindowKey, [event.clientX - state.offset[0], event.clientY - state.offset[1]]);
+      }
+      if (state.moveAction == 'resize') {
+        let diff = [event.clientX - state.start[0], event.clientY - state.start[1]];
+        switch (state.resizeDir) {
+          case 'n':
+            actions.resizeWindow(state.activeWindowKey, (size) => [size?.[0], state.windowSize[1] - diff[1]]);
+            actions.moveWindow(state.activeWindowKey, (pos) => [pos?.[0], state.windowStart[1] + diff[1]]);
+            break;
+          case 'ne':
+            actions.resizeWindow(state.activeWindowKey, (size) => [
+              state.windowSize[0] + diff[0],
+              state.windowSize[1] - diff[1],
+            ]);
+            actions.moveWindow(state.activeWindowKey, (pos) => [pos?.[0], state.windowStart[1] + diff[1]]);
+            break;
+          case 'nw':
+            actions.resizeWindow(state.activeWindowKey, (size) => [
+              state.windowSize[0] - diff[0],
+              state.windowSize[1] - diff[1],
+            ]);
+            actions.moveWindow(state.activeWindowKey, (pos) => [
+              state.windowStart[0] + diff[0],
+              state.windowStart[1] + diff[1],
+            ]);
+            break;
+          case 's':
+            actions.resizeWindow(state.activeWindowKey, (size) => [size?.[0], state.windowSize[1] + diff[1]]);
+            break;
+          case 'se':
+            actions.resizeWindow(state.activeWindowKey, (size) => [
+              state.windowSize[0] + diff[0],
+              state.windowSize[1] + diff[1],
+            ]);
+            break;
+          case 'sw':
+            actions.resizeWindow(state.activeWindowKey, (size) => [
+              state.windowSize[0] - diff[0],
+              state.windowSize[1] + diff[1],
+            ]);
+            actions.moveWindow(state.activeWindowKey, (pos) => [state.windowStart[0] + diff[0], pos?.[1]]);
+            break;
+          case 'e':
+            actions.resizeWindow(state.activeWindowKey, (size) => [state.windowSize[0] + diff[0], size?.[1]]);
+            break;
+          case 'w':
+            actions.resizeWindow(state.activeWindowKey, (size) => [state.windowSize[0] - diff[0], size?.[1]]);
+            actions.moveWindow(state.activeWindowKey, (pos) => [state.windowStart[0] + diff[0], pos?.[1]]);
+            break;
+          default:
+            break;
+        }
+      }
     },
     onMouseUp: (event) => {
       if (!state.active) return;
       event.preventDefault();
       event.stopPropagation();
       state.active = false;
+      state.start = [0, 0];
       state.windowStart = [0, 0];
+      state.windowSize = [0, 0];
       state.activeWindowKey = null;
+      state.moveAction = null;
+      state.resizeDir = null;
       state.offset = [0, 0];
     },
   };

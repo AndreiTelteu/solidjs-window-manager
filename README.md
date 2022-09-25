@@ -1,6 +1,8 @@
 # solidjs-window-manager
 
-<img src="https://i.imgur.com/AbeTZsS.gif" />
+Create a windows based UI that is persistent in localStorage.
+
+<img src="https://i.imgur.com/gA022I4.gif" />
 
 Demo here: https://codesandbox.io/s/solidjs-window-based-ui-demo-kmg3ib?file=/src/App.tsx:186-508
 
@@ -100,11 +102,16 @@ npm start
 
 ## Changelog:
 
+### v1.0.3
+
+- Added support for **window resizing** on every side and corner
+- Added EditPost window in example project to demonstrate the persistence of the window params, and the usage of windowApi from inside another window
+
 ### v1.0.2
 
 - Made windows load from user-code.
 - Added ErrorBoundry in windows.
-- Added real-life example project using Vite.
+- Added real-life example project using Vite (list posts from a demo api, with a virtual-list plugin).
 
 ### v1.0.1
 

@@ -15,72 +15,86 @@ export function WindowControls(attrs: any): JSX.Element {
     <div
       class="window-controller-wrapper"
       style={{
-        left: `${props.attrs.pos[0]}px`,
-        top: `${props.attrs.pos[1]}px`,
-        width: `${props.attrs.size[0]}px`,
-        height: `${props.attrs.size[1]}px`,
+        left: `${props.attrs.pos?.[0] || 100}px`,
+        top: `${props.attrs.pos?.[1] || 100}px`,
+        width: `${props.attrs.size?.[0] || 100}px`,
+        height: `${props.attrs.size?.[1] || 100}px`,
         'z-index': 10000 - props.attrs.zIndex,
       }}
       window-key={props.attrs.key}
     >
-      <div class="window-controller-header">
-        <div class="window-controller-header-icon">
-          <Show
-            when={props.attrs.icon}
-            fallback={<span class="icon-empty">{String(props?.component || ' ').charAt(0)}</span>}
-          >
-            icon
-          </Show>
-        </div>
-        <div class="window-controller-header-title">
-          <span>{windowState().title}</span>
-        </div>
-        <div class="window-controller-header-controls">
-          <button type="button" class="window-controller-header-btn-minimize" onClick={() => {}}>
-            _
-          </button>
-          <button type="button" class="window-controller-header-btn-maximize" onClick={() => {}}>
-            ☐
-          </button>
-          <button type="button" class="window-controller-header-btn-close" onClick={() => props?.controls?.close()}>
-            X
-          </button>
-        </div>
-      </div>
-      <Show
-        when={windowState().loading}
-        children={() => (
-          <div class="window-controller-loader">
-            <div class="window-controller-loader-bar"></div>
+      <div class="window-controller-resize resize-dir-n" />
+      <div class="window-controller-resize resize-dir-s" />
+      <div class="window-controller-resize resize-dir-e" />
+      <div class="window-controller-resize resize-dir-w" />
+      <div class="window-controller-resize resize-dir-nw" />
+      <div class="window-controller-resize resize-dir-ne" />
+      <div class="window-controller-resize resize-dir-se" />
+      <div class="window-controller-resize resize-dir-sw" />
+
+      <div class="window-controller-container">
+        <div class="window-controller-header">
+          <div class="window-controller-header-icon">
+            <Show
+              when={props.attrs.icon}
+              fallback={<span class="icon-empty">{String(props?.component || ' ').charAt(0)}</span>}
+            >
+              icon
+            </Show>
           </div>
-        )}
-      />
-      <div class="window-controller-inner">
-        <ErrorBoundary
-          fallback={(error) => (
-            <div>
-              <p>Something went terribly wrong.</p>
-              <p>ERROR: {error.message}</p>
+          <div class="window-controller-header-title">
+            <span>{windowState().title}</span>
+          </div>
+          <div class="window-controller-header-controls">
+            <button type="button" class="window-controller-header-btn-minimize" onClick={() => {}}>
+              _
+            </button>
+            <button type="button" class="window-controller-header-btn-maximize" onClick={() => {}}>
+              ☐
+            </button>
+            <button type="button" class="window-controller-header-btn-close" onClick={() => props?.controls?.close()}>
+              X
+            </button>
+          </div>
+        </div>
+        <Show
+          when={windowState().loading}
+          children={() => (
+            <div class="window-controller-loader">
+              <div class="window-controller-loader-bar"></div>
             </div>
           )}
-        >
-          <Suspense fallback={<></>}>
-            <Dynamic
-              component={NewComponent}
-              {...props.props}
-              windowApi={props.windowApi}
-              windowUpdateProps={(i) => {
-                setWindowState((v) => ({ ...v, loading: false, ...i }));
-              }}
-            />
-          </Suspense>
-        </ErrorBoundary>
+        />
+        <div class="window-controller-inner">
+          <ErrorBoundary
+            fallback={(error) => (
+              <div>
+                <p>Something went terribly wrong.</p>
+                <p>ERROR: {error.message}</p>
+              </div>
+            )}
+          >
+            <Suspense fallback={<></>}>
+              <Dynamic
+                component={NewComponent}
+                {...props.props}
+                windowApi={props.windowApi}
+                windowUpdateProps={(i) => {
+                  setWindowState((v) => ({ ...v, loading: false, ...i }));
+                }}
+              />
+            </Suspense>
+          </ErrorBoundary>
+        </div>
       </div>
       <style>{`
         .window-controller-wrapper {
           position: absolute;
           top: 10px;
           left: 10px;
+        }
+        .window-controller-container {
+          height: 100%;
           overflow: hidden;
           display: flex;
           flex-direction: column;
@@ -88,7 +102,6 @@ export function WindowControls(attrs: any): JSX.Element {
           justify-content: center;
           background: #fff;
           border-radius: 8px;
-          overflow: hidden;
           box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.15);
           border: 0.5px solid #ccc;
         }
@@ -131,6 +144,9 @@ export function WindowControls(attrs: any): JSX.Element {
         .window-controller-header-title {
           flex: 1;
           cursor: default;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
         }
         .window-controller-header-controls {
           flex-shrink: 0;
@@ -187,6 +203,67 @@ export function WindowControls(attrs: any): JSX.Element {
         @keyframes windowLoaderAnimation {
           from { width: 0%; }
           to { width: 100%; }
+        }
+        .window-controller-resize {
+          position: absolute;
+          // box-shadow: 0px 0px 0px 1px red;
+          z-index: 10;
+        }
+        .window-controller-resize.resize-dir-n,
+        .window-controller-resize.resize-dir-s {
+          left: 0;
+          right: 0;
+          height: 8px;
+        }
+        .window-controller-resize.resize-dir-n {
+          top: -4px;
+          cursor: n-resize;
+        }
+        .window-controller-resize.resize-dir-s {
+          bottom: -4px;
+          cursor: s-resize;
+        }
+        .window-controller-resize.resize-dir-w,
+        .window-controller-resize.resize-dir-e {
+          top: 0;
+          bottom: 0;
+          width: 8px;
+        }
+        .window-controller-resize.resize-dir-w {
+          left: -4px;
+          cursor: w-resize;
+        }
+        .window-controller-resize.resize-dir-e {
+          right: -4px;
+          cursor: e-resize;
+        }
+        .window-controller-resize.resize-dir-nw,
+        .window-controller-resize.resize-dir-ne,
+        .window-controller-resize.resize-dir-sw,
+        .window-controller-resize.resize-dir-se {
+          width: 8px;
+          height: 8px;
+          // box-shadow: 0px 0px 0px 1px green;
+        }
+        .window-controller-resize.resize-dir-nw {
+          top: -4px;
+          left: -4px;
+          cursor: nw-resize;
+        }
+        .window-controller-resize.resize-dir-ne {
+          top: -4px;
+          right: -4px;
+          cursor: ne-resize;
+        }
+        .window-controller-resize.resize-dir-sw {
+          bottom: -4px;
+          left: -4px;
+          cursor: sw-resize;
+        }
+        .window-controller-resize.resize-dir-se {
+          bottom: -4px;
+          right: -4px;
+          cursor: se-resize;
         }
       `}</style>
     </div>
