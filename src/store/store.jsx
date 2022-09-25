@@ -47,7 +47,6 @@ export const reducer = (state = DEFAULT_STATE, action, set) => {
           if ((state?.windows || {})?.hasOwnProperty(action.key)) {
             delete state.windows[action.key];
           }
-          console.log('DELETE', JSON.stringify(state?.windows));
         }),
       );
       return null;

@@ -9,7 +9,6 @@ export function WindowManager(attrs: any): JSX.Element {
   const openedWindows = () => Object.keys(store.windows);
 
   const openWindow = (component, props = {}) => {
-    console.log({ component, props });
     actions.openWindow(component, props);
   };
 
@@ -57,7 +56,6 @@ export function WindowManager(attrs: any): JSX.Element {
           }
         }
       });
-      console.log({ foundHeader, foundWindow, foundResize });
       if (!foundWindow || (!foundHeader && !foundResize)) return;
       event.preventDefault();
       event.stopPropagation();

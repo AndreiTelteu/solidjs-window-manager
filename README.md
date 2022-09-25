@@ -21,7 +21,7 @@ yarn add solidjs-window-manager
 `src/App.tsx`
 
 ```jsx
-import { JSX } from 'solid-js';
+import { JSX, lazy } from 'solid-js';
 import { WindowManager } from 'solidjs-window-manager';
 
 export default function App(): JSX.Element {
@@ -37,26 +37,28 @@ export default function App(): JSX.Element {
         persistent: true, // this persists all opened windows with props, position and size in localstorage
       }}
     >
-      <p>Desktop</p>
-      <p>
-        <button
-          type="button"
-          onClick={() => {
-            windowApi?.openWindow?.('MyComputer', { path: '/home/user' });
-          }}
-        >
-          open new window
-        </button>
-      </p>
+      <div style={{ padding: '10px' }}>
+        <p style={{ color: 'white' }}>Desktop</p>
+        <p>
+          <button
+            type="button"
+            onClick={() => {
+              windowApi?.openWindow?.('MyComputer', { path: '/home/user' });
+            }}
+          >
+            open new window
+          </button>
+        </p>
+      </div>
     </WindowManager>
   );
 }
 ```
 
-`src/windows/MyComputer.jsx` (you can change `windows` folder via `loadWindow` prop)
+`src/windows/MyComputer.tsx` (you can change `windows` folder via `loadWindow` prop)
 
 ```jsx
-import { JSX, createSignal, onMount } from 'solid-js';
+import { JSX, onMount } from 'solid-js';
 
 export default function MyComputer(props: any): JSX.Element {
   onMount(() => {
