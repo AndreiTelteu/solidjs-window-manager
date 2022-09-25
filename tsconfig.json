@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "target": "esnext",
+    "newLine": "LF",
+    "moduleResolution": "node",
+    "strict": false,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js",
+    "outDir": "./dist",
+    "module": "esnext"
+  },
+  "include": [
+    "./src"
+  ],
+  "exclude": ["node_modules/"]
+}
