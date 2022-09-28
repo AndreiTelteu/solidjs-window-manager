@@ -1,11 +1,11 @@
 import { children, JSX, For, onMount, splitProps } from 'solid-js';
-import useWindowState from './store/useWindowState';
+import windowState from './store/windowState';
 import { WindowControls } from './WindowControls';
 
 export function WindowManager(attrs: any): JSX.Element {
   const child = children(() => attrs.children);
   const [props, rest] = splitProps(attrs, ['onReady', 'loadWindow', 'options']);
-  const [store, actions] = useWindowState();
+  const [store, actions] = windowState();
   const openedWindows = () => Object.keys(store.windows);
 
   const openWindow = (component, props = {}) => {

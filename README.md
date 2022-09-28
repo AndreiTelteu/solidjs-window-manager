@@ -104,6 +104,10 @@ npm start
 
 ## Changelog:
 
+### v1.0.4
+
+- Moved my state management helper in a separate package [solidjs-storex](https://www.npmjs.com/package/solidjs-storex)
+
 ### v1.0.3
 
 - Added support for **window resizing** on every side and corner

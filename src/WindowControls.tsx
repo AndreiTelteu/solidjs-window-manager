@@ -1,6 +1,6 @@
 import { JSX, createSignal, ErrorBoundary, Show, splitProps, Suspense } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
-import useWindowState from './store/useWindowState';
+import windowState from './store/windowState';
 
 export function WindowControls(attrs: any): JSX.Element {
   const [props, rest] = splitProps(attrs, ['component', 'props', 'attrs', 'controls', 'loadWindow', 'windowApi']);
@@ -8,7 +8,6 @@ export function WindowControls(attrs: any): JSX.Element {
     title: 'Loading...',
     loading: true,
   });
-  const [store, actions] = useWindowState();
 
   const NewComponent = props?.loadWindow?.(props);
   return (
