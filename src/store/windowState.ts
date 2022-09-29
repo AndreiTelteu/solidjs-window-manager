@@ -1,5 +1,6 @@
 import { produce } from 'solid-js/store';
 import { defineStore } from 'solidjs-storex';
+import windowPreferencesStore, { findWindowPreferences } from './windowPreferencesStore';
 
 type WindowState = {
   windows: WindowsObject;
@@ -20,6 +21,8 @@ interface WindowAttrs {
   icon?: null | string;
   key: string;
 }
+
+const [windowPreferencesState, { save: saveWindowPreferences }] = windowPreferencesStore();
 
 export default defineStore({
   state: {
@@ -53,6 +56,7 @@ export default defineStore({
     },
     moveWindow: (key, pos) => {
       set('windows', key, 'attrs', 'pos', pos);
+      saveWindowPreferences(state.windows[key].component, (attrs) => ({ ...attrs, pos: state.windows[key].attrs.pos }));
     },
     resizeWindow: (key, size) => {
       const minWidth = 300;
@@ -61,6 +65,10 @@ export default defineStore({
         let newSize = [...size(currentSize)];
         return [newSize[0] < minWidth ? minWidth : newSize[0], newSize[1] < minHeight ? minHeight : newSize[1]];
       });
+      saveWindowPreferences(state.windows[key].component, (attrs) => ({
+        ...attrs,
+        size: state.windows[key].attrs.size,
+      }));
     },
     focusWindow: (key) => {
       Object.keys(state?.windows || {}).forEach((item) => {
@@ -72,9 +80,9 @@ export default defineStore({
 });
 
 const getDefaultWindowsAttrs = (props): WindowAttrs => {
-  // TODO: get last window pos based on comp name
-  return {
+  const defaultAttrs: WindowAttrs = {
     minimized: false,
+    // TODO: calculate center of window minus half window size
     // pos: [window.innerWidth / 2 || 200, window.innerHeight / 2 || 200],
     pos: [200, 200],
     size: [500, 400],
@@ -82,6 +90,14 @@ const getDefaultWindowsAttrs = (props): WindowAttrs => {
     icon: null,
     key: '',
   };
+  if (props.component) {
+    let preferences = findWindowPreferences(windowPreferencesState, props.component);
+    if (preferences) {
+      if (preferences.pos) defaultAttrs.pos = preferences.pos;
+      if (preferences.size) defaultAttrs.size = preferences.size;
+    }
+  }
+  return defaultAttrs;
 };
 
 const generateWindowKey = (props) => {

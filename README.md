@@ -104,9 +104,10 @@ npm start
 
 ## Changelog:
 
-### v1.0.5 [WIP]
+### v1.0.5
 
 - Added minimum size restriction
+- Save last window size and position based on component name
 
 ### v1.0.4
 
