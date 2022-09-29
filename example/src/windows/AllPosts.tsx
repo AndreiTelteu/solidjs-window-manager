@@ -26,9 +26,11 @@ export default function AllPosts(attrs: any): JSX.Element {
   });
 
   const [data] = createResource(filterUser, async () => {
+    props.windowUpdateProps({ loading: true });
     let posts = await fetch(
       'https://jsonplaceholder.typicode.com' + (filterUser()?.id ? `/user/${filterUser()?.id}/posts` : '/posts'),
     ).then((response) => response.json());
+    props.windowUpdateProps({ loading: false });
     return posts;
   });
   const [users] = createResource(async (user) => {

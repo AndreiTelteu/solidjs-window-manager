@@ -55,7 +55,12 @@ export default defineStore({
       set('windows', key, 'attrs', 'pos', pos);
     },
     resizeWindow: (key, size) => {
-      set('windows', key, 'attrs', 'size', size);
+      const minWidth = 300;
+      const minHeight = 300;
+      set('windows', key, 'attrs', 'size', (currentSize) => {
+        let newSize = [...size(currentSize)];
+        return [newSize[0] < minWidth ? minWidth : newSize[0], newSize[1] < minHeight ? minHeight : newSize[1]];
+      });
     },
     focusWindow: (key) => {
       Object.keys(state?.windows || {}).forEach((item) => {
@@ -72,7 +77,7 @@ const getDefaultWindowsAttrs = (props): WindowAttrs => {
     minimized: false,
     // pos: [window.innerWidth / 2 || 200, window.innerHeight / 2 || 200],
     pos: [200, 200],
-    size: [400, 400],
+    size: [500, 400],
     zIndex: 1,
     icon: null,
     key: '',
