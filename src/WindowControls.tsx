@@ -99,7 +99,8 @@ export function WindowControls(attrs: any): JSX.Element {
           flex-direction: column;
           align-items: stretch;
           justify-content: center;
-          background: #fff;
+          background: rgba(255, 255, 255, 0.84);
+          backdrop-filter: blur(5px);
           border-radius: 8px;
           box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.15);
           border: 0.5px solid #ccc;
