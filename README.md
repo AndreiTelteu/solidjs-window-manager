@@ -104,7 +104,7 @@ npm start
 
 ## Changelog:
 
-### v1.0.6
+### v1.0.6-7
 
 - Exported windowState for external control
 
