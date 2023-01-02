@@ -96,13 +96,19 @@ npm start
 
 ## Roadmap:
 
-|          |                                               |
-| -------- | --------------------------------------------- |
-| &#x2610; | Center windows by default                     |
-| &#x2610; | Create a taskbar and add support for minimize |
-| &#x2610; | Support maximize                              |
+|          |                           |
+| -------- | ------------------------- |
+| &#x2610; | Center windows by default |
+| ✅       | Create a taskbar          |
+| &#x2610; | Add support for minimize  |
+| &#x2610; | Support maximize          |
 
 ## Changelog:
+
+### v1.0.8
+
+- Created a taskbar with focus and close functionality
+- windowState renamed to windowStore
 
 ### v1.0.6-7
 
