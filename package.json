@@ -1,6 +1,6 @@
 {
   "name": "solidjs-window-manager",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Create a window based UI that is persistent in localstorage.",
   "type": "module",
   "main": "dist/esm/index.js",
@@ -42,7 +42,7 @@
     "solid-js": "^1.5.5"
   },
   "dependencies": {
-    "solidjs-storex": "^1.0.1"
+    "solidjs-storex": "^1.0.2"
   },
   "keywords": [
     "solidjs",

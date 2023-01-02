@@ -104,6 +104,10 @@ npm start
 
 ## Changelog:
 
+### v1.0.6
+
+- Exported windowState for external control
+
 ### v1.0.5
 
 - Added minimum size restriction
