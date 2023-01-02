@@ -34,6 +34,17 @@ export default function App(props: any): JSX.Element {
           open All posts
         </button>
       </p>
+      <style>{`
+        html {
+          overflow: hidden;
+        }
+        body {
+          margin: 0;
+          padding: 0;
+          overflow: hidden;
+          font-family: sans-serif;
+        }
+      `}</style>
     </WindowManager>
   );
 }

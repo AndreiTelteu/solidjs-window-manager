@@ -1,11 +1,12 @@
 import { children, JSX, For, onMount, splitProps } from 'solid-js';
-import windowState from './store/windowState';
+import windowStore from './store/windowStore';
+import Taskbar from './Taskbar';
 import { WindowControls } from './WindowControls';
 
 export function WindowManager(attrs: any): JSX.Element {
   const child = children(() => attrs.children);
   const [props, rest] = splitProps(attrs, ['onReady', 'loadWindow', 'options']);
-  const [store, actions] = windowState();
+  const [store, actions] = windowStore();
   const openedWindows = () => Object.keys(store.windows);
 
   const openWindow = (component, props = {}) => {
@@ -156,6 +157,7 @@ export function WindowManager(attrs: any): JSX.Element {
 
   return (
     <div class="window-manager-wrapper" ref={mainWrapper} {...events}>
+      <Taskbar />
       {child()}
       <For
         each={openedWindows()}
@@ -174,14 +176,8 @@ export function WindowManager(attrs: any): JSX.Element {
         }}
       />
       <style>{`
-        html {
-          overflow: hidden;
-        }
-        body {
-          margin: 0;
-          padding: 0;
-          overflow: hidden;
-          font-family: sans-serif;
+        .window-manager-wrapper, .window-manager-wrapper * {
+          box-sizing: border-box;
         }
         .window-manager-wrapper {
           width: 100vw;

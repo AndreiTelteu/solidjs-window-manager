@@ -1,12 +1,30 @@
-import { JSX, createSignal, ErrorBoundary, Show, splitProps, Suspense } from 'solid-js';
+import { JSX, createSignal, ErrorBoundary, Show, splitProps, Suspense, createEffect } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
-import windowState from './store/windowState';
+import windowStore from './store/windowStore';
+import WindowIcon from './WindowIcon';
 
 export function WindowControls(attrs: any): JSX.Element {
   const [props, rest] = splitProps(attrs, ['component', 'props', 'attrs', 'controls', 'loadWindow', 'windowApi']);
+  const [store, actions] = windowStore();
   const [windowState, setWindowState] = createSignal({
     title: 'Loading...',
     loading: true,
+  });
+
+  createEffect(() => {
+    let newState = windowState();
+    const syncKeys = ['title', 'loading'];
+    let shouldUpdate = false;
+    let newAttrState = {};
+    syncKeys.forEach((key) => {
+      if (newState?.[key] !== props?.attrs?.state?.[key]) {
+        shouldUpdate = true;
+        newAttrState[key] = newState[key];
+      }
+    });
+    if (shouldUpdate) {
+      actions.updateWindowState(props?.attrs?.key, newAttrState);
+    }
   });
 
   const NewComponent = props?.loadWindow?.(props);
@@ -34,12 +52,7 @@ export function WindowControls(attrs: any): JSX.Element {
       <div class="window-controller-container">
         <div class="window-controller-header">
           <div class="window-controller-header-icon">
-            <Show
-              when={props.attrs.icon}
-              fallback={<span class="icon-empty">{String(props?.component || ' ').charAt(0)}</span>}
-            >
-              icon
-            </Show>
+            <WindowIcon icon={props?.attrs?.icon} name={props?.component} />
           </div>
           <div class="window-controller-header-title">
             <span>{windowState().title}</span>
@@ -123,22 +136,6 @@ export function WindowControls(attrs: any): JSX.Element {
         }
         .window-controller-header-icon {
           flex-shrink: 0;
-          cursor: default;
-        }
-        .window-controller-header-icon .icon-empty {
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          justify-content: center;
-          font-size: 11px;
-          color: #5c5c5c;
-          font-family: sans-serif;
-          text-transform: uppercase;
-          background: #ccc;
-          border-radius: 100%;
-          width: 18px;
-          height: 18px;
-          margin: 10px;
           cursor: default;
         }
         .window-controller-header-title {
