@@ -2,7 +2,7 @@ import { produce } from 'solid-js/store';
 import { defineStore } from 'solidjs-storex';
 import windowPreferencesStore, { findWindowPreferences } from './windowPreferencesStore';
 
-type WindowState = {
+type WindowStore = {
   windows: WindowsObject;
 };
 interface WindowsObject {
@@ -13,6 +13,9 @@ interface WindowProps {
   props: any;
   attrs: WindowAttrs;
 }
+interface WindowState {
+  [key: string]: any;
+}
 interface WindowAttrs {
   minimized: boolean;
   pos: [number, number];
@@ -20,6 +23,7 @@ interface WindowAttrs {
   zIndex: number;
   icon?: null | string;
   key: string;
+  state: WindowState;
 }
 
 const [windowPreferencesState, { save: saveWindowPreferences }] = windowPreferencesStore();
@@ -27,7 +31,7 @@ const [windowPreferencesState, { save: saveWindowPreferences }] = windowPreferen
 const initStore = defineStore({
   state: {
     windows: {},
-  } as WindowState,
+  } as WindowStore,
   options: {
     persistance: true,
     storageKey: 'windows-state',
@@ -47,7 +51,7 @@ const initStore = defineStore({
     },
     closeWindow: (key) => {
       set(
-        produce((state: WindowState) => {
+        produce((state: WindowStore) => {
           if (state?.windows?.hasOwnProperty(key)) {
             delete state.windows[key];
           }
@@ -76,6 +80,11 @@ const initStore = defineStore({
       });
       set('windows', key, 'attrs', 'zIndex', 1);
     },
+    updateWindowState: (key, newState) => {
+      set('windows', key, 'attrs', 'state', (s) => {
+        return { ...s, ...newState };
+      });
+    },
   }),
 });
 
@@ -89,6 +98,7 @@ const getDefaultWindowsAttrs = (props): WindowAttrs => {
     zIndex: 1,
     icon: null,
     key: '',
+    state: { title: '', loading: true },
   };
   if (props.component) {
     let preferences = findWindowPreferences(windowPreferencesState, props.component);
