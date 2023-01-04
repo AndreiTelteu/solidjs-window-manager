@@ -10,6 +10,7 @@ export function WindowControls(attrs: any): JSX.Element {
     title: 'Loading...',
     loading: true,
   });
+  const [isAnimating, setIsAnimating] = createSignal(false);
 
   createEffect(() => {
     let newState = windowState();
@@ -27,16 +28,52 @@ export function WindowControls(attrs: any): JSX.Element {
     }
   });
 
+  let prevAttrs = { ...props.attrs };
+  let animatingTimeout;
+  createEffect(() => {
+    if (prevAttrs?.maximized !== props.attrs?.maximized || prevAttrs?.minimized !== props.attrs?.minimized) {
+      setIsAnimating(true);
+      if (animatingTimeout) {
+        clearTimeout(animatingTimeout);
+        animatingTimeout = null;
+      }
+      animatingTimeout = setTimeout(() => {
+        setIsAnimating(false);
+      }, 150);
+    }
+    prevAttrs = { ...props.attrs };
+  });
+
   const NewComponent = props?.loadWindow?.(props);
   return (
     <div
-      class="window-controller-wrapper"
+      class={`window-controller-wrapper ${props.attrs.maximized ? 'is-maximized' : ''} ${
+        props.attrs.minimized ? 'is-minimized' : ''
+      } ${isAnimating() ? 'is-animating' : ''}`}
       style={{
-        left: `${props.attrs.pos?.[0] || 100}px`,
-        top: `${props.attrs.pos?.[1] || 100}px`,
-        width: `${props.attrs.size?.[0] || 100}px`,
-        height: `${props.attrs.size?.[1] || 100}px`,
         'z-index': 10000 - props.attrs.zIndex,
+        ...(props.attrs.maximized
+          ? {
+              left: 0,
+              top: '60px',
+              right: 0,
+              bottom: 0,
+              width: '100%',
+              height: '100%',
+            }
+          : {
+              left: `${props.attrs.pos?.[0] || 100}px`,
+              top: `${props.attrs.pos?.[1] || 100}px`,
+              width: `${props.attrs.size?.[0] || 100}px`,
+              height: `${props.attrs.size?.[1] || 100}px`,
+            }),
+        ...(props.attrs.minimized
+          ? {
+              transform: `translate(0, ${-(props.attrs.pos?.[1] || 100) - (props.attrs.size?.[1] || 100)}px)`,
+            }
+          : {
+              transform: 'translate(0, 0)',
+            }),
       }}
       window-key={props.attrs.key}
     >
@@ -58,10 +95,18 @@ export function WindowControls(attrs: any): JSX.Element {
             <span>{windowState().title}</span>
           </div>
           <div class="window-controller-header-controls">
-            <button type="button" class="window-controller-header-btn-minimize" onClick={() => {}}>
+            <button
+              type="button"
+              class="window-controller-header-btn-minimize"
+              onClick={() => props?.controls?.minimize(true)}
+            >
               _
             </button>
-            <button type="button" class="window-controller-header-btn-maximize" onClick={() => {}}>
+            <button
+              type="button"
+              class="window-controller-header-btn-maximize"
+              onClick={() => props?.controls?.maximize(!props.attrs.maximized)}
+            >
               ☐
             </button>
             <button type="button" class="window-controller-header-btn-close" onClick={() => props?.controls?.close()}>
@@ -105,6 +150,9 @@ export function WindowControls(attrs: any): JSX.Element {
           top: 10px;
           left: 10px;
         }
+        .window-controller-wrapper.is-animating {
+          transition: all 150ms ease-in-out;
+        }
         .window-controller-container {
           height: 100%;
           overflow: hidden;
@@ -117,6 +165,13 @@ export function WindowControls(attrs: any): JSX.Element {
           border-radius: 8px;
           box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.15);
           border: 0.5px solid #ccc;
+        }
+        .window-controller-wrapper.is-animating .window-controller-container {
+          transition: all 150ms ease-in-out;
+        }
+        .window-controller-wrapper.is-maximized .window-controller-container {
+          background: rgba(255, 255, 255, 1);
+          border-radius: 0px;
         }
         .window-controller-header {
           flex-shrink: 0;

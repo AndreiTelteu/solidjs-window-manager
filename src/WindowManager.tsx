@@ -170,6 +170,8 @@ export function WindowManager(attrs: any): JSX.Element {
               windowApi={windowApi}
               controls={{
                 close: () => actions.closeWindow(windowProps?.attrs?.key),
+                maximize: (maximized) => actions.maximizeWindow(windowProps?.attrs?.key, maximized),
+                minimize: (minimized) => actions.minimizeWindow(windowProps?.attrs?.key, minimized),
               }}
             />
           );

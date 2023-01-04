@@ -100,10 +100,15 @@ npm start
 | -------- | ------------------------- |
 | &#x2610; | Center windows by default |
 | ✅       | Create a taskbar          |
-| &#x2610; | Add support for minimize  |
-| &#x2610; | Support maximize          |
+| ✅       | Add support for minimize  |
+| ✅       | Support maximize          |
+| &#x2610; | Context menu for taskbar  |
 
 ## Changelog:
+
+### v1.0.9
+
+- Suport for maximize and minimize with animations
 
 ### v1.0.8
 

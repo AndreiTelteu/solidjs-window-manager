@@ -5,6 +5,7 @@ import WindowIcon from './WindowIcon';
 const Taskbar: Component = (props) => {
   const [store, actions] = windowStore();
   const openedWindows = () => Object.keys(store.windows);
+  const isFocused = (item) => item?.attrs?.zIndex == 1;
   return (
     <>
       <div class="window-manager-taskbar-placeholder"></div>
@@ -15,9 +16,13 @@ const Taskbar: Component = (props) => {
               const windowProps = store.windows[item];
               return (
                 <div
-                  class={`${'window-manager-taskbar-item'} ${windowProps?.attrs?.zIndex == 1 ? 'is-active' : ''}`}
+                  class={`${'window-manager-taskbar-item'} ${isFocused(windowProps) ? 'is-active' : ''}`}
                   onClick={() => {
-                    actions.focusWindow(windowProps?.attrs?.key);
+                    if (isFocused(windowProps)) {
+                      actions.minimizeWindow(windowProps?.attrs?.key, true);
+                    } else {
+                      actions.focusWindow(windowProps?.attrs?.key);
+                    }
                   }}
                 >
                   <div class="window-manager-taskbar-icon">

@@ -17,6 +17,7 @@ interface WindowState {
   [key: string]: any;
 }
 interface WindowAttrs {
+  maximized: boolean;
   minimized: boolean;
   pos: [number, number];
   size: [number, number];
@@ -40,7 +41,9 @@ const initStore = defineStore({
   actions: (state, set) => ({
     openWindow: (component, props) => {
       Object.keys(state?.windows || {}).forEach((item) => {
-        set('windows', item, 'attrs', 'zIndex', (i) => ++i);
+        if (state.windows[item].attrs.minimized == false) {
+          set('windows', item, 'attrs', 'zIndex', (i) => ++i);
+        }
       });
       let key = generateWindowKey({ component, props });
       set('windows', key, {
@@ -76,8 +79,11 @@ const initStore = defineStore({
     },
     focusWindow: (key) => {
       Object.keys(state?.windows || {}).forEach((item) => {
-        set('windows', item, 'attrs', 'zIndex', (i) => ++i);
+        if (state.windows[item].attrs.minimized == false) {
+          set('windows', item, 'attrs', 'zIndex', (i) => ++i);
+        }
       });
+      set('windows', key, 'attrs', 'minimized', false);
       set('windows', key, 'attrs', 'zIndex', 1);
     },
     updateWindowState: (key, newState) => {
@@ -85,11 +91,26 @@ const initStore = defineStore({
         return { ...s, ...newState };
       });
     },
+    maximizeWindow: (key, maximized) => {
+      set('windows', key, 'attrs', 'maximized', maximized);
+    },
+    minimizeWindow: (key, minimized) => {
+      set('windows', key, 'attrs', 'minimized', minimized);
+      if (minimized == true) {
+        set('windows', key, 'attrs', 'zIndex', 0);
+        Object.keys(state?.windows || {}).forEach((item) => {
+          if (state.windows[item].attrs.minimized == false) {
+            set('windows', item, 'attrs', 'zIndex', (i) => (i > 1 ? --i : i));
+          }
+        });
+      }
+    },
   }),
 });
 
 const getDefaultWindowsAttrs = (props): WindowAttrs => {
   const defaultAttrs: WindowAttrs = {
+    maximized: false,
     minimized: false,
     // TODO: calculate center of window minus half window size
     // pos: [window.innerWidth / 2 || 200, window.innerHeight / 2 || 200],
