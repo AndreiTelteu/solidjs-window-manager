@@ -183,6 +183,7 @@ export function WindowManager(attrs: any): JSX.Element {
           width: 100vw;
           height: 100vh;
           overflow: hidden;
+          position: relative;
         }
         .window-manager-wrapper::before {
           content:'';
