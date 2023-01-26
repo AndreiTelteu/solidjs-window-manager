@@ -1,4 +1,5 @@
 import { children, JSX, For, onMount, splitProps } from 'solid-js';
+import eventPath from './eventPathPolyfill';
 import windowStore from './store/windowStore';
 import Taskbar from './Taskbar';
 import { WindowControls } from './WindowControls';
@@ -30,7 +31,8 @@ export function WindowManager(attrs: any): JSX.Element {
       let foundResize: boolean | string = false;
       let foundWindow = false;
       let activeWindow = null;
-      event.path?.forEach((el) => {
+      const path = eventPath(event);
+      path.forEach((el) => {
         const className = String(el?.className || '');
         if (className.indexOf('window-controller-header') !== -1) {
           foundHeader = true;
@@ -57,6 +59,7 @@ export function WindowManager(attrs: any): JSX.Element {
           }
         }
       });
+      console.log('mousedown', { foundHeader, foundResize, foundWindow, el: event });
       if (!foundWindow || (!foundHeader && !foundResize)) return;
       event.preventDefault();
       event.stopPropagation();

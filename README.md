@@ -106,6 +106,10 @@ npm start
 
 ## Changelog:
 
+### v1.1.0
+
+- Polyfill for event.path browser support. (Fixed error windows would not move)
+
 ### v1.0.9
 
 - Suport for maximize and minimize with animations
