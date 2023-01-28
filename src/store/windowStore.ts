@@ -29,7 +29,7 @@ interface WindowAttrs {
 
 const [windowPreferencesState, { save: saveWindowPreferences }] = windowPreferencesStore();
 
-const initStore = defineStore({
+export default defineStore({
   state: {
     windows: {},
   } as WindowStore,
@@ -136,7 +136,3 @@ const generateWindowKey = (props) => {
     return ((Math.random() * 36) | 0).toString(36)[Math.random() < 0.5 ? 'toString' : 'toUpperCase']();
   });
 };
-
-const store = initStore();
-
-export default () => store;

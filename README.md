@@ -106,6 +106,10 @@ npm start
 
 ## Changelog:
 
+### v1.1.1
+
+- Update dependencies
+
 ### v1.1.0
 
 - Polyfill for event.path browser support. (Fixed error windows would not move)
