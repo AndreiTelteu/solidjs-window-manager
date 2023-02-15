@@ -106,6 +106,10 @@ npm start
 
 ## Changelog:
 
+### v1.1.2
+
+- Added window props for close, maximize and minimize. Made taskbar a bit smaller.
+
 ### v1.1.1
 
 - Update dependencies

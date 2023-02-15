@@ -49,7 +49,7 @@ const Taskbar: Component = (props) => {
       <style>{`
         .window-manager-taskbar-placeholder {
           width: 100%;
-          height: 60px;
+          height: 50px;
         }
         .window-manager-taskbar {
           position: fixed;
@@ -57,11 +57,11 @@ const Taskbar: Component = (props) => {
           left: 0;
           right: 0;
           width: 100%;
-          height: 60px;
+          height: 50px;
           z-index: 100;
           background: rgba(255, 255, 255, 0.6);
           backdrop-filter: blur(5px);
-          padding: 10px;
+          padding: 7px 10px;
         }
         .window-manager-taskbar-wrapper {
           display: flex;
@@ -75,7 +75,7 @@ const Taskbar: Component = (props) => {
           display: flex;
           flex-direction: row;
           align-items: center;
-          height: 40px;
+          height: 36px;
           width: 200px;
           border-radius: 6px;
           cursor: pointer;
@@ -99,8 +99,9 @@ const Taskbar: Component = (props) => {
           font-size: 13px;
           overflow: hidden;
           text-overflow: ellipsis;
-          max-height: 1.9rem;
+          max-height: 0.9rem;
           word-break: break-all;
+          white-space: nowrap;
         }
         .window-manager-taskbar-btn {
           flex-shrink: 0;

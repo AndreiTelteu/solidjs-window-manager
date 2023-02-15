@@ -139,6 +139,9 @@ export function WindowControls(attrs: any): JSX.Element {
                 windowUpdateProps={(i) => {
                   setWindowState((v) => ({ ...v, loading: false, ...i }));
                 }}
+                close={() => props?.controls?.close()}
+                minimize={(val = true) => props?.controls?.minimize(val)}
+                maximize={(val = true) => props?.controls?.maximize(val)}
               />
             </Suspense>
           </ErrorBoundary>
