@@ -1,5 +1,5 @@
 import { JSX, lazy } from 'solid-js';
-import { WindowManager } from '../../src/index';
+import { WindowManager } from 'solidjs-window-manager';
 
 export default function App(props: any): JSX.Element {
   let windowApi;

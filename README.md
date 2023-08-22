@@ -106,6 +106,10 @@ npm start
 
 ## Changelog:
 
+### v1.1.3
+
+- Migrated from rollup to [tsup-preset-solid](https://github.com/solidjs-community/tsup-preset-solid)
+
 ### v1.1.2
 
 - Added window props for close, maximize and minimize. Made taskbar a bit smaller.

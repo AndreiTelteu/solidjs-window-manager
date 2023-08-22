@@ -1,3 +1,4 @@
+import { StoreSetter } from 'solid-js/store';
 import { defineStore } from 'solidjs-storex';
 
 interface WindowPreferencesState {
@@ -11,12 +12,12 @@ interface WindowPreferencesProps {
 export default defineStore({
   state: {} as WindowPreferencesState,
   options: {
-    persistance: true,
+    persistent: true,
     storageKey: 'windows-preferences-state',
     storageThrottle: 250,
   },
   actions: (state, set) => ({
-    save: (key: string, props: WindowPreferencesProps) => {
+    save: (key: string, props: StoreSetter<WindowPreferencesProps, string[]>) => {
       set(key, props);
     },
     get: (key: string) => {

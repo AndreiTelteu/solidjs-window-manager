@@ -34,7 +34,7 @@ export default defineStore({
     windows: {},
   } as WindowStore,
   options: {
-    persistance: true,
+    persistent: true,
     storageKey: 'windows-state',
     storageThrottle: 250,
   },
@@ -70,7 +70,10 @@ export default defineStore({
       const minHeight = 300;
       set('windows', key, 'attrs', 'size', (currentSize) => {
         let newSize = [...size(currentSize)];
-        return [newSize[0] < minWidth ? minWidth : newSize[0], newSize[1] < minHeight ? minHeight : newSize[1]];
+        return [
+          newSize[0] < minWidth ? minWidth : newSize[0],
+          newSize[1] < minHeight ? minHeight : newSize[1],
+        ] satisfies [number, number];
       });
       saveWindowPreferences(state.windows[key].component, (attrs) => ({
         ...attrs,
