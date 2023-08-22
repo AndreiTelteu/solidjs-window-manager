@@ -1,5 +1,7 @@
 # solidjs-window-manager
 
+[![bundlejs](https://deno.bundlejs.com/badge?q=solidjs-window-manager@1.1.3&treeshake=[{+WindowManager+}])](https://bundlejs.com/?q=solidjs-window-manager%401.1.3&treeshake=%5B%7B+WindowManager+%7D%5D)
+
 Create a windows based UI that is persistent in localStorage.
 
 <img src="https://i.imgur.com/gA022I4.gif" />
@@ -90,8 +92,8 @@ export default function MyComputer(props: any): JSX.Element {
 ```
 git clone https://github.com/AndreiTelteu/solidjs-window-manager
 cd solidjs-window-manager/example
-npm install
-npm start
+yarn install
+yarn start
 ```
 
 ## Roadmap:
