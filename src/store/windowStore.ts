@@ -108,6 +108,9 @@ export default defineStore({
         });
       }
     },
+    updateWindowProps: (key, newProps) => {
+      set('windows', key, 'props', (s) => ({ ...s, ...newProps }));
+    },
   }),
 });
 

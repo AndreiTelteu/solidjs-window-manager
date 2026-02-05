@@ -1,6 +1,6 @@
 {
   "name": "solidjs-window-manager",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "description": "Create a window based UI that is persistent in localstorage.",
   "license": "MIT",
   "author": "Andrei Telteu",
