@@ -1,6 +1,6 @@
 # solidjs-window-manager
 
-[![bundlejs](https://deno.bundlejs.com/badge?q=solidjs-window-manager@1.1.3&treeshake=[{+WindowManager+}])](https://bundlejs.com/?q=solidjs-window-manager%401.1.3&treeshake=%5B%7B+WindowManager+%7D%5D)
+[![bundlejs](https://deno.bundlejs.com/badge?q=solidjs-window-manager@1.1.4&treeshake=[{+WindowManager+}])](https://bundlejs.com/?q=solidjs-window-manager%401.1.4&treeshake=%5B%7B+WindowManager+%7D%5D)
 
 Create a windows based UI that is persistent in localStorage.
 
@@ -107,6 +107,10 @@ yarn start
 | &#x2610; | Context menu for taskbar  |
 
 ## Changelog:
+
+### v1.1.4
+
+- Added `setProps` prop to window components for updating window props that persist to localStorage
 
 ### v1.1.3
 

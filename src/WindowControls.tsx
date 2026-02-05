@@ -139,6 +139,7 @@ export function WindowControls(attrs: any): JSX.Element {
                 windowUpdateProps={(i) => {
                   setWindowState((v) => ({ ...v, loading: false, ...i }));
                 }}
+                setProps={(newProps) => actions.updateWindowProps(props?.attrs?.key, newProps)}
                 close={() => props?.controls?.close()}
                 minimize={(val = true) => props?.controls?.minimize(val)}
                 maximize={(val = true) => props?.controls?.maximize(val)}
